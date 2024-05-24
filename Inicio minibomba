@@ -1,0 +1,33 @@
+import RPi.GPIO as GPIO
+import time
+
+# Definir el número del pin GPIO que se utilizará para controlar el transistor
+pin_transistor = 17
+try:
+    # Configurar la biblioteca RPi.GPIO
+    GPIO.setmode(GPIO.BCM)
+    
+    # Configurar el pin GPIO del transistor como salida
+    GPIO.setup(pin_transistor, GPIO.OUT)
+
+    # Función para encender la minibomba
+    def encender_bomba():
+        GPIO.output(pin_transistor, GPIO.HIGH)  # Encender la minibomba
+        print("Minibomba encendida.")
+
+    # Función para apagar la minibomba
+    def apagar_bomba():
+        GPIO.output(pin_transistor, GPIO.LOW)   # Apagar la minibomba
+        print("Minibomba apagada.")
+
+    # Encender la minibomba
+    encender_bomba()
+
+    # Esperar 5 segundos antes de apagar la minibomba
+    time.sleep(5)
+
+    # Apagar la minibomba
+    apagar_bomba()
+finally:
+    # Limpiar los pines GPIO al finalizar el programa
+    GPIO.cleanup()
