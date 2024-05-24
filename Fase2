@@ -1,0 +1,195 @@
+import RPi.GPIO as GPIO # type: ignore
+import serial
+import threading
+import time
+
+# Definir el numero del pin GPIO que se utilizaran para controlar la minibomba
+pin_transistor = 17
+def control_minibomba():
+    """
+    Funcion para controlar la minibomba a traves de GPIO.
+    """
+    try:
+        # Configurar la biblioteca RPi.GPIO
+        GPIO.setmode(GPIO.BCM)
+        
+        # Configurar el pin GPIO del transistor como salida
+        GPIO.setup(pin_transistor, GPIO.OUT)
+
+        # Funcio para encender la minibomba
+        def encender_bomba():
+            GPIO.output(pin_transistor, GPIO.HIGH)  # Encender la minibomba
+            print("Minibomba encendida.")
+
+        # Funcion para apagar la minibomba
+        def apagar_bomba():
+            GPIO.output(pin_transistor, GPIO.LOW)   # Apagar la minibomba
+            print("Minibomba apagada.")
+
+        # Encender la minibomba
+        encender_bomba()
+
+        # Esperar 5 segundos antes de apagar la minibomba
+        time.sleep(40)
+
+        # Apagar la minibomba
+        apagar_bomba()
+
+    finally:
+        # Limpiar los pines GPIO al finalizar el programa
+        GPIO.cleanup()
+
+def control_roomba():
+    "Funcion para enviar comandos a la Roomba a travï¿½s de puerto serial."
+    try:
+        # Abrir nueva conexion serial
+        ser = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.5)
+
+        # Actuar sobre los cepillos
+        ser.write(bytes([128]))  # Enviar "Start" Opcode para iniciar la Interfaz Abierta, Roomba en Modo Pasivo
+        ser.write(bytes([131]))  # Enviar "Safe Mode" Opcode para habilitar que Roomba responda a los comandos
+
+        ser.write(bytes([144,100,100,100])) #Inicio cepillos
+        time.sleep(3.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0]))  # Detener el movimiento
+        time.sleep(0.3)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0]))
+        time.sleep(0.3) 
+        ser.write(bytes([137,0,150,255,255]))  # Acomodar a la derecha
+        time.sleep(0.05)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.3)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.8)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,0,150,0,1]))  # Girar a la izquierda
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255,150,0,0])) # Derecho despues de giro
+        time.sleep(1.8)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,0,150,0,1]))  # Girar a la izquierda
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0]))
+        time.sleep(0.3) 
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(3.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,0,150,0,1]))  # Acomodar a la izquierda
+        time.sleep(0.05)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(3.8)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.3)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(1.7)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255,150,0,0]))  # Derecho despues de giro 
+        time.sleep(2.2)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(1.8)
+        ser.write(bytes([137, 0, 0, 0, 0]))
+        time.sleep(0.3) 
+        ser.write(bytes([137,0,150,0,1]))  # Acomodar a la izquierda 
+        time.sleep(0.06)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0]))
+        time.sleep(0.3) 
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.3)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.3)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(3.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255,150,0,0]))  # derecho despues de giro 
+        time.sleep(4.2)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+        time.sleep(1.32)
+        ser.write(bytes([137,0,0,0,0]))
+        time.sleep(1.0)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(3.8)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,0, 150, 0,1 ]))  # Acomodara a la izquierda 
+        time.sleep(0.05)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(5.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([137,255, 150, 0, 0]))  # Avanzar
+        time.sleep(2.0)
+        ser.write(bytes([137, 0, 0, 0, 0])) 
+        time.sleep(0.5)
+        ser.write(bytes([144,0,0,0])) 
+        
+        # Cerrar la conexiï¿½n serial
+        ser.write(bytes([142, 21])) 
+        ser.write(bytes([173]))
+    finally:
+        # Cerrar la conexion serial
+        ser.close()
+
+# Crear hilos para ejecutar ambas funciones simultaneamente
+thread_minibomba = threading.Thread(target=control_minibomba)
+thread_roomba = threading.Thread(target=control_roomba)
+
+# Iniciar los hilos
+
+thread_roomba.start()
+thread_minibomba.start()
+# Esperar a que ambos hilos terminen antes de continuar
+
+thread_roomba.join()
+thread_minibomba.join()
+print("Programa terminado.")
