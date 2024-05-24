@@ -1,0 +1,120 @@
+import serial
+import time
+
+# Abrir nueva conexiï¿½n (NOTA: cambia el puerto segï¿½n sea necesario)
+ser = serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0.5)
+# Actuar sobre los cepillos
+ser.write(bytes([128]))  # Enviar "Start" Opcode para iniciar la Interfaz Abierta, Roomba en Modo Pasivo
+ser.write(bytes([131]))  # Enviar "Safe Mode" Opcode para habilitar que Roomba responda a los comandos
+ser.write(bytes([144,100,100,100])) #Inicio cepillos
+time.sleep(3.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar 
+time.sleep(2.0)
+ser.write(bytes([137, 0, 0, 0, 0]))  # Detener el movimiento
+time.sleep(0.3)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.0)
+ser.write(bytes([137, 0, 0, 0, 0]))
+time.sleep(0.3) 
+ser.write(bytes([137,0,150,255,255]))  # Acomodar a la derecha
+time.sleep(0.05)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.0)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.3)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.8)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([137,0,150,0,1]))  # Girar a la izquierda
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,0,0])) # Derecho despues de giro
+time.sleep(1.8)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,0,1]))  # Girar a la izquierda
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.0)
+ser.write(bytes([137, 0, 0, 0, 0]))
+time.sleep(0.3) 
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(3.0)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([137,0,150,0,1]))  # Acomodar a la izquierda
+time.sleep(0.05)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(3.8)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.3)
+ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,0,0]))  # Derecho despues de giro 
+time.sleep(1.9)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(1.8)
+ser.write(bytes([137, 0, 0, 0, 0]))
+time.sleep(0.3) 
+ser.write(bytes([137,0,150,0,1]))  # Acomodar a la izquierda 
+time.sleep(0.06)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.0)
+ser.write(bytes([137, 0, 0, 0, 0]))
+time.sleep(0.3) 
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(2.3)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.3)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(3.0)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,0,0]))  # Derecho despues de giro 
+time.sleep(3.8)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0,150,255,255]))  # Girar a la derecha
+time.sleep(1.32)
+ser.write(bytes([137,0,0,0,0]))
+time.sleep(1.0)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(3.8)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([137,0, 150, 0,1 ]))  # Acomodara a la izquierda 
+time.sleep(0.05)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([137,0, 150, 0, 0]))  # Avanzar
+time.sleep(5.0)
+ser.write(bytes([137, 0, 0, 0, 0])) 
+time.sleep(0.5)
+ser.write(bytes([144,0,0,0])) 
+  
+# Cerrar la conexion serial
+ser.write(bytes([142, 21])) 
+ser.write(bytes([173]))
+ser.close()
